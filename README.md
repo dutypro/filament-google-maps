@@ -11,11 +11,9 @@ either as part of an admin panel, or in standalone front end forms, tables and d
 
 ## About The Project
 
-### Filament v3 release
+### Filament v4 release
 
-This is the v3 branch, compatible with the recent Filament v3 release.  At some point soon we will replace
-the main branch (currently the Filament v2 compatible branch) with this v3 branch, and move Filament v2 support to
-a v2 branch.
+This is the v4 branch, compatible with Filament v4. It requires PHP 8.2+ and Laravel 11.28+.
 
 Please report any you find either on the [GitHub Issues](https://github.com/cheesegrits/filament-google-maps/issues) page,
 or find me (@cheesegrits) on the [Filament Discord server](https://filamentphp.com/discord).
@@ -34,7 +32,7 @@ We are not liable if you get a surprise bill!
 If you just can't handle reading documentation and want to dive right in ...
 
 ```sh
-composer require cheesegrits/filament-google-maps "^3.0"
+composer require cheesegrits/filament-google-maps "^4.0"
 ```
 
 ... then follow these instructions to add a computed attribute to any  model(s) that will use these components (which
@@ -136,15 +134,14 @@ a combination of address fields into lat lng, or reverse geocoding lat and lng t
 
 ### Prerequisites
 
-This package is built on Filament V2, and Laravel 9.  It may run on earlier versions of
-Laravel, but has not been tested.
+This package is built on Filament v4, PHP 8.2+, and Laravel 11.28+.
 
 ### Installation
 
 You can install this project via composer:
 
 ```sh
-composer install cheesegrits/filament-google-maps
+composer require cheesegrits/filament-google-maps "^4.0"
 ```
 
 ### Assets
@@ -1071,37 +1068,31 @@ Filament methods to define the table columns, filters, actions, etc.
 
 ```php
 use Cheesegrits\FilamentGoogleMaps\Widgets\MapTableWidget;
+use Filament\Tables\Table;
 
 // ...
 
 class DealershipMap extends MapTableWidget
 {
     // ...
-    protected function getTableQuery(): Builder
+    public function table(Table $table): Table
     {
-        return Dealer::all();
-    }
-
-    protected function getTableColumns(): array
-    {
-        return [
-            Tables\Columns\TextColumn::make('name'),
-            Tables\Columns\TextColumn::make('state.name'),
-            Tables\Columns\TextColumn::make('phone')
-                ->searchable(),
-            Tables\Columns\TextColumn::make('email')
-                ->searchable(),
-        ];
-    }
-
-    protected function getTableFilters(): array
-    {
-        return [
-            Tables\Filters\SelectFilter::make('state')
-                ->label('State')
-                ->relationship('state','state_name'),
-            MapIsFilter::make('map'),
-        ];
+        return $table
+            ->query(Dealer::query())
+            ->columns([
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('state.name'),
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('state')
+                    ->label('State')
+                    ->relationship('state','state_name'),
+                MapIsFilter::make('map'),
+            ]);
     }
     // ...
 }

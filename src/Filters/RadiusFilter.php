@@ -40,7 +40,7 @@ class RadiusFilter extends BaseFilter
     {
         parent::setUp();
 
-        $this->columnSpan(2);
+        $this->columnSpan(['default' => 'full', 'lg' => 2]);
 
         //		$this->getTable()->getFiltersFormWidth('7xl');
 
