@@ -2,14 +2,18 @@
 
 namespace Cheesegrits\FilamentGoogleMaps\Actions;
 
+use Filament\Forms;
+
+use Filament\Actions\BulkAction;
+use Filament\Forms\Components\Select;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
+use Illuminate\Database\Eloquent\Collection;
+use Mastani\GoogleStaticMap\GoogleStaticMap;
+use Filament\Actions\Concerns\CanCustomizeProcess;
 use Cheesegrits\FilamentGoogleMaps\Columns\MapColumn;
 use Cheesegrits\FilamentGoogleMaps\Helpers\MapsHelper;
-use Filament\Actions\Concerns\CanCustomizeProcess;
-use Filament\Forms;
-use Filament\Tables\Actions\BulkAction;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Mastani\GoogleStaticMap\GoogleStaticMap;
 
 class StaticMapAction extends BulkAction
 {
@@ -26,7 +30,7 @@ class StaticMapAction extends BulkAction
 
         $this->label(__('filament-google-maps::fgm.static_map_action.button.label'));
 
-        $this->modalHeading(fn (): string => __('filament-google-maps::fgm.static_map_action.modal.heading', ['label' => $this->getPluralModelLabel()]));
+        $this->modalHeading(fn(): string => __('filament-google-maps::fgm.static_map_action.modal.heading', ['label' => $this->getPluralModelLabel()]));
 
         $this->modalButton(__('filament-google-maps::fgm.static_map_action.modal.label'));
 
@@ -39,24 +43,24 @@ class StaticMapAction extends BulkAction
         $this->requiresConfirmation();
 
         $this->form([
-            Forms\Components\Card::make()->schema([
-                Forms\Components\TextInput::make('width')
+            Section::make()->schema([
+                TextInput::make('width')
                     ->integer()
                     ->minValue(100)
                     ->maxValue(640)
                     ->default(600),
-                Forms\Components\TextInput::make('height')
+                TextInput::make('height')
                     ->integer()
                     ->minValue(100)
                     ->maxValue(640)
                     ->default(450),
-                Forms\Components\Select::make('scale')
+                Select::make('scale')
                     ->options([
                         1 => '1',
                         2 => '2',
                     ])
                     ->default(1),
-                Forms\Components\Select::make('type')
+                Select::make('type')
                     ->options([
                         'satellite' => 'Satellite',
                         'hybrid'    => 'Hybrid',

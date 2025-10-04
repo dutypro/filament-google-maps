@@ -4,6 +4,7 @@ namespace Cheesegrits\FilamentGoogleMaps\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Throwable;
 
 use function Laravel\Prompts\text;
 
@@ -38,10 +39,10 @@ class ModelCode extends Command
 
         try {
             $model = new ('\\App\\Models\\' . $modelName)();
-        } catch (\Throwable) {
+        } catch (Throwable) {
             try {
                 $model = new $modelName;
-            } catch (\Throwable) {
+            } catch (Throwable) {
                 echo "Can't find class {$modelName} or \\App\\Models\\{$modelName}\n";
 
                 return static::INVALID;

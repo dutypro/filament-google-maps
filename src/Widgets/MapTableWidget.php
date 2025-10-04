@@ -3,20 +3,21 @@
 namespace Cheesegrits\FilamentGoogleMaps\Widgets;
 
 use Closure;
-use Filament\Tables;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
-class MapTableWidget extends MapWidget implements Tables\Contracts\HasTable
+class MapTableWidget extends MapWidget implements HasTable
 {
-    use Tables\Concerns\InteractsWithTable {
+    use InteractsWithTable {
         getTableRecords as traitGetTableRecords;
     }
 
-    protected static string $view = 'filament-google-maps::widgets.filament-google-maps-table-widget';
+    protected string $view = 'filament-google-maps::widgets.filament-google-maps-table-widget';
 
     protected static ?string $heading = null;
 

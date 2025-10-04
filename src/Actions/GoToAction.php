@@ -3,9 +3,10 @@
 namespace Cheesegrits\FilamentGoogleMaps\Actions;
 
 use Closure;
-use Filament\Tables\Actions\Action;
-use Illuminate\Database\Eloquent\Model;
+
+use Filament\Actions\Action;
 use Illuminate\Support\HtmlString;
+use Illuminate\Database\Eloquent\Model;
 
 class GoToAction extends Action
 {
@@ -45,7 +46,8 @@ class GoToAction extends Action
 
             return [
                 'x-on:click' => new HtmlString(
-                    sprintf("\$dispatch('filament-google-maps::widget/setMapCenter', {lat: %f, lng: %f, zoom: %d})",
+                    sprintf(
+                        "\$dispatch('filament-google-maps::widget/setMapCenter', {lat: %f, lng: %f, zoom: %d})",
                         round(floatval($record->{$latLngFields['lat']}), 8),
                         round(floatval($record->{$latLngFields['lng']}), 8),
                         $this->getZoom()
